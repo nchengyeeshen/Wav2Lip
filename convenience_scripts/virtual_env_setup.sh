@@ -13,5 +13,8 @@ source ./venv/bin/activate
 echo 'Updating pip before installing Python dependencies'
 pip install --upgrade pip
 
+echo 'Installing wheel'
+pip install wheel
+
 echo 'Installing Python dependencies'
 pip install -r ./requirements.txt
