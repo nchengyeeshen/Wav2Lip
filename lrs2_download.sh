@@ -17,20 +17,20 @@ echo "Creating ./lrs2/"
 mkdir -p ./lrs2/
 
 echo "Changing directory to ./lrs2/"
-cd ./lrs2/
+cd ./lrs2/ || exit 1
 
 echo "Downloading dataset parts sequentially"
 for letter in {a..e}
 do
     echo "Downloading parta$letter"
-    wget --user $LRS2_USERNAME --password $LRS2_PASSWORD --continue "https://www.robots.ox.ac.uk/~vgg/data/lip_reading/data2/lrs2_v1_parta$letter"
+    wget --user "$LRS2_USERNAME" --password "$LRS2_PASSWORD" --continue "https://www.robots.ox.ac.uk/~vgg/data/lip_reading/data2/lrs2_v1_parta$letter"
 done
 
 echo "Downloading filelists"
 for file in 'pretrain.txt' 'train.txt' 'val.txt' 'test.txt'
 do
     echo "Downloading filelist $file"
-    wget --user $LRS2_USERNAME --password $LRS2_PASSWORD --continue "https://www.robots.ox.ac.uk/~vgg/data/lip_reading/data2/$file"
+    wget --user "$LRS2_USERNAME" --password "$LRS2_PASSWORD" --continue "https://www.robots.ox.ac.uk/~vgg/data/lip_reading/data2/$file"
 done
 
 echo "To combine all the parts into one .tar file, run the following command"
