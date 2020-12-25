@@ -339,6 +339,8 @@ def _load(checkpoint_path):
     if use_cuda:
         checkpoint = torch.load(checkpoint_path)
     else:
+        # Loads all tensors onto CPU, see Examples section in
+        # https://pytorch.org/docs/stable/generated/torch.load.html
         checkpoint = torch.load(
             checkpoint_path, map_location=lambda storage, loc: storage
         )
