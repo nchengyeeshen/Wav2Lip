@@ -20,7 +20,6 @@ from models import SyncNet_color as SyncNet
 global_step = 0
 global_epoch = 0
 use_cuda = torch.cuda.is_available()
-print("use_cuda: {}".format(use_cuda))
 
 syncnet_T = 5
 syncnet_mel_step_size = 16
@@ -181,7 +180,7 @@ def train(
                         test_data_loader, global_step, device, model, checkpoint_dir
                     )
 
-            prog_bar.set_description("Loss: {}".format(running_loss / (step + 1)))
+            prog_bar.set_description("Running Loss: {}".format(running_loss / (step + 1)))
 
         global_epoch += 1
 
@@ -230,7 +229,7 @@ def save_checkpoint(model, optimizer, step, checkpoint_dir, epoch):
         },
         checkpoint_path,
     )
-    print("Saved checkpoint:", checkpoint_path)
+    print("\nSaved checkpoint:", checkpoint_path)
 
 
 def _load(checkpoint_path):
@@ -315,12 +314,14 @@ def main():
         test_dataset, batch_size=hparams.syncnet_batch_size, num_workers=8
     )
 
-    device = torch.device("cuda" if use_cuda else "cpu")
+    device_type = "cuda" if use_cuda else "cpu"
+    device = torch.device(device_type)
+    print(f"Using {device_type} for training")
 
     # Model
     model = SyncNet().to(device)
     print(
-        "total trainable params {}".format(
+        "Total trainable parameters: {:,}".format(
             sum(p.numel() for p in model.parameters() if p.requires_grad)
         )
     )
