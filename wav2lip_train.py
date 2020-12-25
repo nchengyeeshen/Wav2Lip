@@ -21,7 +21,6 @@ from models import Wav2Lip as Wav2Lip
 global_step = 0
 global_epoch = 0
 use_cuda = torch.cuda.is_available()
-print("use_cuda: {}".format(use_cuda))
 
 syncnet_T = 5
 syncnet_mel_step_size = 16
@@ -273,7 +272,7 @@ def train(
                         )  # without image GAN a lesser weight is sufficient
 
             prog_bar.set_description(
-                "L1: {}, Sync Loss: {}".format(
+                "Running L1 Loss: {}, Running Sync Loss: {}".format(
                     running_l1_loss / (step + 1), running_sync_loss / (step + 1)
                 )
             )
@@ -333,7 +332,7 @@ def save_checkpoint(model, optimizer, step, checkpoint_dir, epoch):
         },
         checkpoint_path,
     )
-    print("Saved checkpoint:", checkpoint_path)
+    print("\nSaved checkpoint:", checkpoint_path)
 
 
 def _load(checkpoint_path):
@@ -426,12 +425,14 @@ def main():
         test_dataset, batch_size=hparams.batch_size, num_workers=4
     )
 
-    device = torch.device("cuda" if use_cuda else "cpu")
+    device_type = "cuda" if use_cuda else "cpu"
+    device = torch.device(device_type)
+    print(f"Using {device_type} for training")
 
     # Model
     model = Wav2Lip().to(device)
     print(
-        "total trainable params {}".format(
+        "Total trainable parameters: {:,}".format(
             sum(p.numel() for p in model.parameters() if p.requires_grad)
         )
     )
