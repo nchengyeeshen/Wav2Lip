@@ -281,7 +281,7 @@ def load_checkpoint(path, model, optimizer, reset_optimizer=False):
     return model
 
 
-if __name__ == "__main__":
+def main():
     checkpoint_dir = args.checkpoint_dir
     checkpoint_path = args.checkpoint_path
 
@@ -330,3 +330,7 @@ if __name__ == "__main__":
         checkpoint_interval=hparams.syncnet_checkpoint_interval,
         nepochs=hparams.nepochs,
     )
+
+
+if __name__ == "__main__":
+    main()
