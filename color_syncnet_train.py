@@ -16,26 +16,6 @@ import audio
 from hparams import get_image_list, hparams
 from models import SyncNet_color as SyncNet
 
-parser = argparse.ArgumentParser(
-    description="Code to train the expert lip-sync discriminator"
-)
-
-parser.add_argument(
-    "--data_root", help="Root folder of the preprocessed LRS2 dataset", required=True
-)
-
-parser.add_argument(
-    "--checkpoint_dir",
-    help="Save checkpoints to this directory",
-    required=True,
-    type=str,
-)
-parser.add_argument(
-    "--checkpoint_path", help="Resumed from this checkpoint", default=None, type=str
-)
-
-args = parser.parse_args()
-
 
 global_step = 0
 global_epoch = 0
@@ -281,7 +261,38 @@ def load_checkpoint(path, model, optimizer, reset_optimizer=False):
     return model
 
 
+def parse_cmd_line_args():
+    """Parse command line arguments."""
+
+    parser = argparse.ArgumentParser(
+        description="Train the expert lip-sync discriminator"
+    )
+
+    parser.add_argument(
+        "--data_root",
+        help="Root folder of the preprocessed LRS2 dataset",
+        required=True,
+    )
+
+    parser.add_argument(
+        "--checkpoint_dir",
+        help="Save checkpoints to this directory",
+        required=True,
+        type=str,
+    )
+
+    parser.add_argument(
+        "--checkpoint_path",
+        help="Resume training from this checkpoint",
+        default=None,
+        type=str,
+    )
+
+    return parser.parse_args()
+
+
 def main():
+    args = parse_cmd_line_args()
     data_root = args.data_root
     checkpoint_dir = args.checkpoint_dir
     checkpoint_path = args.checkpoint_path
