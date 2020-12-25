@@ -47,8 +47,8 @@ syncnet_mel_step_size = 16
 
 
 class Dataset(object):
-    def __init__(self, split):
-        self.all_videos = get_image_list(args.data_root, split)
+    def __init__(self, data_root, split):
+        self.all_videos = get_image_list(data_root, split)
 
     def get_frame_id(self, frame):
         return int(basename(frame).split(".")[0])
@@ -282,6 +282,7 @@ def load_checkpoint(path, model, optimizer, reset_optimizer=False):
 
 
 def main():
+    data_root = args.data_root
     checkpoint_dir = args.checkpoint_dir
     checkpoint_path = args.checkpoint_path
 
@@ -289,8 +290,8 @@ def main():
         os.mkdir(checkpoint_dir)
 
     # Dataset and Dataloader setup
-    train_dataset = Dataset("train")
-    test_dataset = Dataset("val")
+    train_dataset = Dataset(data_root, "train")
+    test_dataset = Dataset(data_root, "val")
 
     train_data_loader = data_utils.DataLoader(
         train_dataset,
