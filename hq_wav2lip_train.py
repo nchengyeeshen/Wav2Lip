@@ -323,7 +323,7 @@ def train(
                         hparams.set_hparam("syncnet_wt", 0.03)
 
             prog_bar.set_description(
-                "L1: {}, Sync: {}, Percep: {} | Fake: {}, Real: {}".format(
+                "Running -- L1: {}, Sync: {}, Percep: {} | Fake: {}, Real: {}".format(
                     running_l1_loss / (step + 1),
                     running_sync_loss / (step + 1),
                     running_perceptual_loss / (step + 1),
@@ -396,7 +396,7 @@ def eval_model(test_data_loader, global_step, device, model, disc):
                 break
 
         print(
-            "L1: {}, Sync: {}, Percep: {} | Fake: {}, Real: {}".format(
+            "Averaged -- L1: {}, Sync: {}, Percep: {} | Fake: {}, Real: {}".format(
                 sum(running_l1_loss) / len(running_l1_loss),
                 sum(running_sync_loss) / len(running_sync_loss),
                 sum(running_perceptual_loss) / len(running_perceptual_loss),
@@ -421,7 +421,7 @@ def save_checkpoint(model, optimizer, step, checkpoint_dir, epoch, prefix=""):
         },
         checkpoint_path,
     )
-    print("Saved checkpoint:", checkpoint_path)
+    print("\nSaved checkpoint:", checkpoint_path)
 
 
 def _load(checkpoint_path):
@@ -529,12 +529,12 @@ def main():
     disc = Wav2Lip_disc_qual().to(device)
 
     print(
-        "total trainable params {}".format(
+        "Total trainable parameters {:,}".format(
             sum(p.numel() for p in model.parameters() if p.requires_grad)
         )
     )
     print(
-        "total DISC trainable params {}".format(
+        "Total discriminator trainable parameters {:,}".format(
             sum(p.numel() for p in disc.parameters() if p.requires_grad)
         )
     )
