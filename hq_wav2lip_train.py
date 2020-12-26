@@ -18,45 +18,6 @@ from hparams import get_image_list, hparams
 from models import SyncNet_color as SyncNet
 from models import Wav2Lip, Wav2Lip_disc_qual
 
-parser = argparse.ArgumentParser(
-    description="Code to train the Wav2Lip model WITH the visual quality discriminator"
-)
-
-parser.add_argument(
-    "--data_root",
-    help="Root folder of the preprocessed LRS2 dataset",
-    required=True,
-    type=str,
-)
-
-parser.add_argument(
-    "--checkpoint_dir",
-    help="Save checkpoints to this directory",
-    required=True,
-    type=str,
-)
-parser.add_argument(
-    "--syncnet_checkpoint_path",
-    help="Load the pre-trained Expert discriminator",
-    required=True,
-    type=str,
-)
-
-parser.add_argument(
-    "--checkpoint_path",
-    help="Resume generator from this checkpoint",
-    default=None,
-    type=str,
-)
-parser.add_argument(
-    "--disc_checkpoint_path",
-    help="Resume quality disc from this checkpoint",
-    default=None,
-    type=str,
-)
-
-args = parser.parse_args()
-
 
 global_step = 0
 global_epoch = 0
@@ -499,7 +460,50 @@ def load_checkpoint(
     return model
 
 
+def parse_cmd_line_args():
+    """Parse command line arguments."""
+    parser = argparse.ArgumentParser(
+        description="Code to train the Wav2Lip model WITH the visual quality discriminator"
+    )
+
+    parser.add_argument(
+        "--data_root",
+        help="Root folder of the preprocessed LRS2 dataset",
+        required=True,
+        type=str,
+    )
+
+    parser.add_argument(
+        "--checkpoint_dir",
+        help="Save checkpoints to this directory",
+        required=True,
+        type=str,
+    )
+    parser.add_argument(
+        "--syncnet_checkpoint_path",
+        help="Load the pre-trained Expert discriminator",
+        required=True,
+        type=str,
+    )
+
+    parser.add_argument(
+        "--checkpoint_path",
+        help="Resume generator from this checkpoint",
+        default=None,
+        type=str,
+    )
+    parser.add_argument(
+        "--disc_checkpoint_path",
+        help="Resume quality disc from this checkpoint",
+        default=None,
+        type=str,
+    )
+
+    return parser.parse_args()
+
+
 def main():
+    args = parse_cmd_line_args()
     checkpoint_dir = args.checkpoint_dir
 
     # Dataset and Dataloader setup
