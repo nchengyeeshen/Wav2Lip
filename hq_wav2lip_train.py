@@ -22,7 +22,6 @@ from models import Wav2Lip, Wav2Lip_disc_qual
 global_step = 0
 global_epoch = 0
 use_cuda = torch.cuda.is_available()
-print("use_cuda: {}".format(use_cuda))
 
 syncnet_T = 5
 syncnet_mel_step_size = 16
@@ -521,7 +520,9 @@ def main():
         test_dataset, batch_size=hparams.batch_size, num_workers=4
     )
 
-    device = torch.device("cuda" if use_cuda else "cpu")
+    device_type = "cuda" if use_cuda else "cpu"
+    device = torch.device(device_type)
+    print(f"Using {device_type} for training")
 
     # Model
     model = Wav2Lip().to(device)
