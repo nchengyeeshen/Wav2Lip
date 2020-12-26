@@ -502,6 +502,8 @@ def parse_cmd_line_args():
 
 
 def main():
+    print(f"Using {'cuda' if use_cuda else 'cpu'} for training")
+
     args = parse_cmd_line_args()
     checkpoint_dir = args.checkpoint_dir
 
@@ -519,10 +521,6 @@ def main():
     test_data_loader = data_utils.DataLoader(
         test_dataset, batch_size=hparams.batch_size, num_workers=4
     )
-
-    device_type = "cuda" if use_cuda else "cpu"
-    device = torch.device(device_type)
-    print(f"Using {device_type} for training")
 
     # Model
     model = Wav2Lip().to(device)
