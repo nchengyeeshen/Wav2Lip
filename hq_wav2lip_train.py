@@ -499,7 +499,7 @@ def load_checkpoint(
     return model
 
 
-if __name__ == "__main__":
+def main():
     checkpoint_dir = args.checkpoint_dir
 
     # Dataset and Dataloader setup
@@ -581,3 +581,7 @@ if __name__ == "__main__":
         checkpoint_interval=hparams.checkpoint_interval,
         nepochs=hparams.nepochs,
     )
+
+
+if __name__ == "__main__":
+    main()
