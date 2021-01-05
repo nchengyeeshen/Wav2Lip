@@ -4,6 +4,16 @@ import os
 
 
 def get_image_list(data_root, split):
+	"""
+	Get image paths from file list.
+
+	Arguments:
+		data_root -- Root folder of preprocessed dataset.
+		split -- file list filename, without file extension.
+
+	Returns:
+		A list of files.
+	"""
     filelist = []
 
     with open("filelists/{}.txt".format(split)) as f:
@@ -75,6 +85,7 @@ hparams = HParams(
 
 
 def hparams_debug_string():
+	"""Return a string showing all hyper parameters."""
     values = hparams.values()
     hp = [
         "  %s: %s" % (name, values[name])
