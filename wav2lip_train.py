@@ -27,13 +27,54 @@ syncnet_mel_step_size = 16
 
 
 class Dataset(object):
+    """
+    A class for dataset.
+
+    Attributes:
+        data_root -- Root folder of the preprocessed LRS2 dataset.
+        split -- Name of textfiles in filelists directory without the txt extension.
+
+    Methods:
+        get_frame_id(frame) -- Get the Id of frame using the frame name.
+        get_window(start_frame) -- Get window (a list of frames).
+        read_window(window_fnames) -- Read the frames in window.
+        crop_audio_window(spec, start_frame): Crop audio using start and end index calculated from start frame.
+        get_segmented_mels(spec, start_frame): Get list of cropped melspectogram.
+        prepare_window(window): Transpose frames in window.
+    """
+
     def __init__(self, data_root, split):
+        """
+        Constructs all the neccesary attributes for dataset object.
+        
+        Arguments:
+            data_root -- Root folder of the preprocessed LRS2 dataset.
+            split -- Name of textfiles in filelists directory without the txt extension
+        """
         self.all_videos = get_image_list(data_root, split)
 
     def get_frame_id(self, frame):
+        """
+        Get the Id of frame from the frame name.
+
+        Arguments:
+            frame -- Name of frame.
+
+        Returns:
+            frame_id -- Id of frame.
+        """
         return int(basename(frame).split(".")[0])
 
     def get_window(self, start_frame):
+        """
+        Get window (a list of frames).
+
+        Arguments:
+            start_frame -- Name of start image.
+
+        Returns:
+            window_fnames -- List containing frame names.
+        """
         start_id = self.get_frame_id(start_frame)
         vidname = dirname(start_frame)
 
@@ -46,6 +87,15 @@ class Dataset(object):
         return window_fnames
 
     def read_window(self, window_fnames):
+        """
+        Read the frames in window.
+
+        Arguments:
+            window_fnames -- List containing frame names.
+
+        Returns:
+            window -- List containing frames which are not None.
+        """
         if window_fnames is None:
             return None
         window = []
@@ -63,6 +113,16 @@ class Dataset(object):
         return window
 
     def crop_audio_window(self, spec, start_frame):
+        """
+        Crop audio using start and end index calculated from start frame.
+
+        Arguments:
+            spec -- Melspectogram of audio.
+            start_frame -- Name of start image.
+        
+        Returns:
+            cropped_spec -- Cropped melspectogram(audio).
+        """
         if type(start_frame) == int:
             start_frame_num = start_frame
         else:
@@ -76,6 +136,16 @@ class Dataset(object):
         return spec[start_idx:end_idx, :]
 
     def get_segmented_mels(self, spec, start_frame):
+        """
+        Get list of cropped melspectogram.
+
+        Arguments:
+            spec -- Melspectogram of audio.
+            start_frame -- Name of start image.
+            
+        Results:
+            mels -- List of cropped melspectogram of audio.
+        """
         mels = []
         assert syncnet_T == 5
         start_frame_num = (
@@ -94,6 +164,15 @@ class Dataset(object):
         return mels
 
     def prepare_window(self, window):
+        """
+        Transpose frames in window.
+
+        Arguments:
+            window -- List containing frames.
+        
+        Returns:
+            x -- Window with transposed frames.
+        """
         # 3 x T x H x W
         x = np.asarray(window) / 255.0
         x = np.transpose(x, (3, 0, 1, 2))

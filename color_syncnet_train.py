@@ -26,13 +26,50 @@ syncnet_mel_step_size = 16
 
 
 class Dataset(object):
+    """
+    A class for dataset.
+
+    Attributes:
+        data_root -- Root folder of the preprocessed LRS2 dataset.
+        split -- Name of textfiles in filelists directory without the txt extension.
+
+    Methods:
+        get_frame_id(frame) -- Get the Id of frame using the frame name.
+        get_window(start_frame) -- Get window (a list of frames).
+        crop_audio_window(spec, start_frame): Crop audio using start and end index calculated from start frame.
+    """
     def __init__(self, data_root, split):
+        """
+        Constructs all the neccesary attributes for dataset object.
+        
+        Arguments:
+            data_root -- Root folder of the preprocessed LRS2 dataset.
+            split -- Name of textfiles in filelists directory without the txt extension
+        """
         self.all_videos = get_image_list(data_root, split)
 
     def get_frame_id(self, frame):
+        """
+        Get the Id of frame from the frame name.
+
+        Arguments:
+            frame -- Name of frame.
+
+        Returns:
+            frame_id -- Id of frame.
+        """
         return int(basename(frame).split(".")[0])
 
     def get_window(self, start_frame):
+        """
+        Get window (a list of frames).
+
+        Arguments:
+            start_frame -- Name of start image.
+
+        Returns:
+            window_fnames -- List containing frame names.
+        """
         start_id = self.get_frame_id(start_frame)
         vidname = dirname(start_frame)
 
@@ -45,6 +82,16 @@ class Dataset(object):
         return window_fnames
 
     def crop_audio_window(self, spec, start_frame):
+        """
+        Crop audio using start and end index calculated from start frame.
+
+        Arguments:
+            spec -- Melspectogram of audio.
+            start_frame -- Name of start image.
+        
+        Returns:
+            cropped_spec -- Cropped melspectogram(audio).
+        """
         # num_frames = (T x hop_size * fps) / sample_rate
         start_frame_num = self.get_frame_id(start_frame)
         start_idx = int(80.0 * (start_frame_num / float(hparams.fps)))
