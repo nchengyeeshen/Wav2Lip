@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+      crossorigin="anonymous"
+    />
+
+    <title>Wav2Lip Inference</title>
+  </head>
+
+  <!-- https://www.codeply.com/p/0VM5MJ7Had -->
+  <body
+    class="d-flex flex-column min-vh-100 justify-content-center align-items-center"
+  >
+    <form class="col-4" method="POST" enctype="multipart/form-data">
+      <h1 class="mb-3 fw-normal text-center">Generate lip-synced video</h1>
+      <div class="input-group my-4">
+        <label class="input-group-text" for="video-upload">Video</label>
+        <input
+          type="file"
+          id="video-upload"
+          name="video"
+          class="form-control"
+          accept="video/*"
+          required
+        />
+      </div>
+      <div class="input-group my-4">
+        <label class="input-group-text" for="audio-upload">Audio</label>
+        <input
+          type="file"
+          id="audio-upload"
+          name="audio"
+          class="form-control"
+          accept="audio/*"
+          required
+        />
+      </div>
+      <input
+        class="w-100 btn btn-lg btn-primary"
+        type="submit"
+        value="Begin inference"
+      />
+    </form>
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
