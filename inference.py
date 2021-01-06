@@ -129,16 +129,16 @@ if os.path.isfile(args.face) and args.face.split(".")[1] in ["jpg", "png", "jpeg
 
 
 def get_smoothened_boxes(boxes, T):
-	"""
-	Return a list of smoothened boxes.
+    """
+    Return a list of smoothened boxes.
 
-	Arguments:
-		boxes -- List of bounding boxes of the face.
-		T -- Temporal window (set to 5 frames).
+    Arguments:
+        boxes -- List of bounding boxes of the face.
+        T -- Temporal window (set to 5 frames).
 
-	Returns:
-		boxes -- List of smoothened bounding boxes of the face.
-	"""
+    Returns:
+        boxes -- List of smoothened bounding boxes of the face.
+    """
     for i in range(len(boxes)):
         if i + T > len(boxes):
             window = boxes[len(boxes) - T :]
@@ -149,15 +149,15 @@ def get_smoothened_boxes(boxes, T):
 
 
 def face_detect(images):
-	"""
-	Return a list of images where face is detected.
+    """
+    Return a list of images where face is detected.
 
-	Arguments:
-		images -- List of images.
+    Arguments:
+        images -- List of images.
 
-	Returns:
-		results -- List of images where face is detected.
-	"""
+    Returns:
+        results -- List of images where face is detected.
+    """
     detector = face_detection.FaceAlignment(
         face_detection.LandmarksType._2D, flip_input=False, device=device
     )
@@ -214,13 +214,13 @@ def face_detect(images):
 
 
 def datagen(frames, mels):
-	"""
-	Generate image batch, mel batch, frame batch and coords batch.
-	
-	Arguments:
-		frames -- List of frames from video.
-		mels -- List of melspectogram of audio.
-	"""
+    """
+    Generate image batch, mel batch, frame batch and coords batch.
+
+    Arguments:
+        frames -- List of frames from video.
+        mels -- List of melspectogram of audio.
+    """
     img_batch, mel_batch, frame_batch, coords_batch = [], [], [], []
 
     if args.box[0] == -1:
@@ -279,15 +279,15 @@ print("Using {} for inference.".format(device))
 
 
 def _load(checkpoint_path):
-	"""
-	Remap Tensor location.
+    """
+    Remap Tensor location.
 
-	Arguments:
-		checkpoint_path -- Name of saved checkpoint to load weights from.
+    Arguments:
+        checkpoint_path -- Name of saved checkpoint to load weights from.
 
-	Returns:
-		checkpoint -- New name of saved checkpoint to load weights from.
-	"""
+    Returns:
+        checkpoint -- New name of saved checkpoint to load weights from.
+    """
     if device == "cuda":
         checkpoint = torch.load(checkpoint_path)
     else:
@@ -298,15 +298,15 @@ def _load(checkpoint_path):
 
 
 def load_model(path):
-	"""
-	Load model from path input.
+    """
+    Load model from path input.
 
-	Arguments:
-		path -- Name of saved checkpoint to load weights from.
+    Arguments:
+        path -- Name of saved checkpoint to load weights from.
 
-	Returns:
-		model -- Wav2Lip model.
-	"""
+    Returns:
+        model -- Wav2Lip model.
+    """
     model = Wav2Lip()
     print("Load checkpoint from: {}".format(path))
     checkpoint = _load(path)
