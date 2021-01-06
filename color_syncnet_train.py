@@ -38,10 +38,11 @@ class Dataset(object):
         get_window(start_frame) -- Get window (a list of frames).
         crop_audio_window(spec, start_frame): Crop audio using start and end index calculated from start frame.
     """
+
     def __init__(self, data_root, split):
         """
         Constructs all the neccesary attributes for dataset object.
-        
+
         Arguments:
             data_root -- Root folder of the preprocessed LRS2 dataset.
             split -- Name of textfiles in filelists directory without the txt extension
@@ -88,7 +89,7 @@ class Dataset(object):
         Arguments:
             spec -- Melspectogram of audio.
             start_frame -- Name of start image.
-        
+
         Returns:
             cropped_spec -- Cropped melspectogram(audio).
         """
@@ -227,7 +228,9 @@ def train(
                         test_data_loader, global_step, device, model, checkpoint_dir
                     )
 
-            prog_bar.set_description("Running Loss: {}".format(running_loss / (step + 1)))
+            prog_bar.set_description(
+                "Running Loss: {}".format(running_loss / (step + 1))
+            )
 
         global_epoch += 1
 
