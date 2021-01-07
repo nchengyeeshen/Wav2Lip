@@ -8,7 +8,7 @@ from os import listdir, path
 if not path.isfile("face_detection/detection/sfd/s3fd.pth"):
     raise FileNotFoundError(
         "Save the s3fd model to face_detection/detection/sfd/s3fd.pth \
-							before running this script!"
+                            before running this script!"
     )
 
 import argparse
@@ -56,14 +56,14 @@ template = "ffmpeg -loglevel panic -y -i {} -strict -2 {}"
 
 
 def process_video_file(vfile, args, gpu_id):
-	"""
-	Process video files.
+    """
+    Process video files.
 
-	Arguments:
-		vfile -- video file name.
-		args -- Command line arguments.
-		gpu_id -- GPU ID to be used for processing.
-	"""
+    Arguments:
+        vfile -- video file name.
+        args -- Command line arguments.
+        gpu_id -- GPU ID to be used for processing.
+    """
     video_stream = cv2.VideoCapture(vfile)
 
     frames = []
@@ -98,13 +98,13 @@ def process_video_file(vfile, args, gpu_id):
 
 
 def process_audio_file(vfile, args):
-	"""
-	Process audio files.
+    """
+    Process audio files.
 
-	Arguments:
-		vfile -- Audio file name.
-		args -- Command line arguments.
-	"""
+    Arguments:
+        vfile -- Audio file name.
+        args -- Command line arguments.
+    """
     vidname = os.path.basename(vfile).split(".")[0]
     dirname = vfile.split("/")[-2]
 
@@ -118,12 +118,12 @@ def process_audio_file(vfile, args):
 
 
 def mp_handler(job):
-	"""
-	Process video file, but allow keyboard interruption.
+    """
+    Process video file, but allow keyboard interruption.
 
-	Arguments:
-		job -- Tuple of arguments to `process_video_file`.
-	"""
+    Arguments:
+        job -- Tuple of arguments to `process_video_file`.
+    """
     vfile, args, gpu_id = job
     try:
         process_video_file(vfile, args, gpu_id)
@@ -131,6 +131,7 @@ def mp_handler(job):
         exit(0)
     except:
         traceback.print_exc()
+
 
 def main(args):
     print("Started processing for {} with {} GPUs".format(args.data_root, args.ngpu))
