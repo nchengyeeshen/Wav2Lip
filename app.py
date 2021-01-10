@@ -49,23 +49,26 @@ def upload_file():
             video.save(video_path)
             audio.save(audio_path)
 
-            status = subprocess.run(
-                [
-                    "python",
-                    "inference.py",
-                    "--checkpoint_path",
-                    "checkpoints/wav2lip.pth",
-                    "--face",
-                    video_path,
-                    "--audio",
-                    audio_path,
-                    "--outfile",
-                    os.path.join(app.config["UPLOAD_FOLDER"], "results.mp4"),
-                ]
-            )
-
-            if status.returncode != 0:
-                flash("Something went wrong. Please check the selected video or audio file.")
+            try:
+                subprocess.run(
+                    [
+                        "python",
+                        "inference.py",
+                        "--checkpoint_path",
+                        "checkpoints/wav2lip.pth",
+                        "--face",
+                        video_path,
+                        "--audio",
+                        audio_path,
+                        "--outfile",
+                        os.path.join(app.config["UPLOAD_FOLDER"], "results.mp4"),
+                    ],
+                    check=True,
+                )
+            except subprocess.CalledProcessError:
+                flash(
+                    "Something went wrong. Please check the selected video or audio file."
+                )
                 return redirect(request.url)
 
             return redirect(url_for("uploaded_file", filename="results.mp4"))
