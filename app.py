@@ -13,15 +13,10 @@ from flask import (
 from werkzeug.utils import secure_filename
 
 UPLOAD_FOLDER = "/tmp/uploads"
-ALLOWED_EXTENSIONS = {"mp4", "wav"}
 
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
-
-
-def allowed_file(filename):
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @app.route("/uploads/<filename>")
@@ -43,12 +38,7 @@ def upload_file():
             flash("No selected file")
             return redirect(request.url)
 
-        if (
-            video
-            and audio
-            and allowed_file(video.filename)
-            and allowed_file(audio.filename)
-        ):
+        if video and audio:
             video_path = os.path.join(
                 app.config["UPLOAD_FOLDER"], secure_filename(video.filename)
             )
@@ -59,7 +49,7 @@ def upload_file():
             video.save(video_path)
             audio.save(audio_path)
 
-            subprocess.run(
+            status = subprocess.run(
                 [
                     "python",
                     "inference.py",
@@ -73,6 +63,10 @@ def upload_file():
                     os.path.join(app.config["UPLOAD_FOLDER"], "results.mp4"),
                 ]
             )
+
+            if status.returncode != 0:
+                flash("Something went wrong. Please check the selected video or audio file.")
+                return redirect(request.url)
 
             return redirect(url_for("uploaded_file", filename="results.mp4"))
 

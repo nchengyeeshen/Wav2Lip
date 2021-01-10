@@ -20,8 +20,11 @@
   <body
     class="d-flex flex-column min-vh-100 justify-content-center align-items-center"
   >
-    <form class="col-4" method="POST" enctype="multipart/form-data">
+    <form class="col-md-4" method="POST" enctype="multipart/form-data">
       <h1 class="mb-3 fw-normal text-center">Generate lip-synced video</h1>
+      {% for msg in get_flashed_messages() %}
+      <div class="alert alert-danger" role="alert">{{ msg }}</div>
+      {% endfor %}
       <div class="input-group my-4">
         <label class="input-group-text" for="video-upload">Video</label>
         <input
